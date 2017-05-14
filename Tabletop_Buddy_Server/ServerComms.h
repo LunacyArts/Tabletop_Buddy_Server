@@ -14,7 +14,6 @@ using namespace std;
 typedef std::wstring string_t;
 
 #define TRACE(msg)            wcout << msg
-#define TRACE_ACTION(a, k, v) wcout << a << L" (" << k << L", " << v << L")\n"
 class ServerComms {
 	http_listener listener;
 	
@@ -33,6 +32,7 @@ private:
 
 };
 
+//constructor
 ServerComms::ServerComms(const http::uri& url) : listener(http_listener(url))
 
 {
@@ -55,7 +55,7 @@ ServerComms::ServerComms(const http::uri& url) : listener(http_listener(url))
 	
 }
 
-
+//called when rest service receives a request with method GET
 void ServerComms::handle_get(http_request request)
 {
 	TRACE(L"\nhandle GET\n");
@@ -71,7 +71,7 @@ void ServerComms::handle_get(http_request request)
 	request.reply(status_codes::OK, "value returned GET");
 }
 
-
+//called when rest service receives a request with method POST
 void ServerComms::handle_post(http_request request)
 {
 	TRACE("\nhandle POST\n");
@@ -125,12 +125,14 @@ void ServerComms::handle_post(http_request request)
 
 }
 
+//called when rest service receives a request with method PUT
 void ServerComms::handle_put(http_request request)
 {
 	TRACE("\nhandle PUT\n");
 	request.reply(status_codes::OK, "value returned PUT");
 }
 
+//called when rest service receives a request with method DEL/DELETE
 void ServerComms::handle_delete(http_request request)
 {
 	TRACE("\nhandle DEL\n");
