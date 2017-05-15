@@ -22,7 +22,7 @@ class Server {
 	public:
 		//Server boot
 		Server() {
-			ServerComms sc(L"http://192.168.254.7:9000/");
+			ServerComms sc(L"http://localhost:9000/");
 			sc.start_server();
 			std::cout << "Server started.\n";
 			//Set up random server seed
@@ -52,7 +52,7 @@ class Server {
 			for (int i = 0; i < 6; i++) {
 				id = id + digits[rand() % numChar];
 			}
-			std:cout << "The ID is: " << id << "\n";
+			std::cout << "The ID is: " << id << "\n";
 			return id;
 		}
 };

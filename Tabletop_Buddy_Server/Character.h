@@ -7,14 +7,14 @@ using namespace std;
 class Character {
 	private:
 		int initiative;
-		std::string name;
+		string name;
 	public:
-		Character(std::string n, int i) {
+		Character(string n, int i) {
 			initiative = i;
 			name = n;
 		}
 
-		std::string getname() {
+		string getname() {
 			return name;
 		}
 

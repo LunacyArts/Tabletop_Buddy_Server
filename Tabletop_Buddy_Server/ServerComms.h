@@ -93,9 +93,6 @@ void ServerComms::handle_post(http_request request)
 			string_t username = headers[requser];
 			string_t password = headers[reqpass];
 
-			cout << "Username: " << utility::conversions::to_utf8string(username) <<
-				" Password: " << utility::conversions::to_utf8string(password) << endl;
-
 			//someday, actually check
 			login_ok = true;
 		}
@@ -113,7 +110,7 @@ void ServerComms::handle_post(http_request request)
 		
 		string session_id = "get-some-random-session-id-from-roger";
 		json::value obj;
-		obj[L"session-id"] = json::value::string(utility::conversions::to_string_t(session_id));
+		obj[L"session-id"] = json::value::string(L"idgaf");
 		request.reply(status_codes::OK, obj);
 		
 	}
