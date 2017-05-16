@@ -21,14 +21,14 @@ public:
 	ServerComms(const http::uri& url);
 	void start_server();
 	void stop_server();
-	
+	string conv(string_t toconv);
 
 private:
 	void handle_get(http_request request);
 	void handle_put(http_request request);
 	void handle_post(http_request request);
 	void handle_delete(http_request request);
-
+	
 
 };
 
@@ -125,8 +125,60 @@ void ServerComms::handle_post(http_request request)
 //called when rest service receives a request with method PUT
 void ServerComms::handle_put(http_request request)
 {
-	TRACE("\nhandle PUT\n");
-	request.reply(status_codes::OK, "value returned PUT");
+	web::uri path = request.relative_uri();
+
+	bool error = false;
+	string_t error_details;
+
+	if (path.path() == uri(L"/v1/create/user/").path()) {
+		cout << "Got user creation uri" << endl;
+		cout << utility::conversions::to_utf8string(path.path()) << endl;
+
+		http_headers headers = request.headers();
+		string_t reqsession = U("session-id");
+		if (headers.has(reqsession)) {
+			//do shit
+			//check session against roger's db
+			string_t firstname = L"firstname";
+			string_t lastname = L"lastname";
+			string_t username = L"username";
+			string_t email = L"email";
+			string_t password = L"password";
+			json::value req_json = request.extract_json().get();
+			if (req_json.has_field(firstname) && req_json.has_field(lastname) && req_json.has_field(username) && req_json.has_field(email) && req_json.has_field(password)) {
+				string_t got_first = req_json.at(firstname).as_string();
+				string_t got_last = req_json.at(lastname).as_string();
+				string_t got_user = req_json.at(username).as_string();
+				string_t got_email = req_json.at(email).as_string();
+				string_t got_pass = req_json.at(password).as_string();
+
+				cout << conv(got_first) << " " << conv(got_last) << " " << conv(got_user) << " " << conv(got_email) << " " << conv(got_pass) << endl;
+			}
+			else {
+				error = true;
+				error_details = U("some required fields missing");
+			}
+		}
+		else {
+			//no sesson header
+			error = true;
+			error_details = U("no session-id header found");
+		}
+
+	}
+
+	if (error) {
+		//handle error state
+		json::value obj;
+		obj[L"error"] = json::value::string(error_details);
+		request.reply(status_codes::Unauthorized, obj);
+	}
+	else {
+		//success
+		request.reply(status_codes::Created);
+	}
+	
+	//request.reply(status_codes::OK, "value returned PUT");
 }
 
 //called when rest service receives a request with method DEL/DELETE
@@ -156,4 +208,10 @@ void ServerComms::start_server(){
 void ServerComms::stop_server() {
 	listener.close();
 
+}
+
+//convert fucky string to normal string
+inline string ServerComms::conv(string_t toconv)
+{
+	return utility::conversions::to_utf8string(toconv);
 }
