@@ -11,15 +11,10 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 	
-	std::cout << "Starting Server\n";
+	std::cout << "Starting Server.\n";
 	Server server = Server();
-	std::string Lobby_ID = server.create_lobby("Temp", 0000);
-	thread RunServer(&Server::RunServer, server);
-	while (1) 
-	{
-		cout << "hello \n";
-		Sleep(5);
-	};
+	cout << "Server has been closed. Stopping executable.";
+	Sleep(5000);
 	return 0;
 
 }

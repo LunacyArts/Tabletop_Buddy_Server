@@ -6,19 +6,21 @@
 using namespace std;
 
 class User {
-	private:
-		string UName;
-		string AuthKey;
-		time_t LastContact;
+private:
+	string UName;
+	string AuthKey;
+	time_t LastContact;
 
-	public:
-		User(string fn, string ln, string un, string e, string pass) {
-			string FName = fn;
-			string LName = ln;
-			UName = un;
-			string Email = e;
-			string Password = pass;
-		}
-
-
+public:
+	User(string fn, string ln, string un, string e, string pass) {
+		string fName = fn;
+		string lName = ln;
+		UName = un;
+		string email = e;
+		string password = pass;
+	}
+	User(string un, string pass) {
+		UName = un;
+		string password = pass;
+	}
 };
