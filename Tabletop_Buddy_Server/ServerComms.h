@@ -127,16 +127,18 @@ void ServerComms::handle_put(http_request request)
 {
 	web::uri path = request.relative_uri();
 
+	string_t return_session_id = L"to be set later idk";
+
 	bool error = false;
 	string_t error_details;
+	status_code code = status_codes::OK;
 
 	if (path.path() == uri(L"/v1/create/user/").path()) {
 		cout << "Got user creation uri" << endl;
 		cout << utility::conversions::to_utf8string(path.path()) << endl;
 
 		http_headers headers = request.headers();
-		string_t reqsession = U("session-id");
-		if (headers.has(reqsession)) {
+		
 			//do shit
 			//check session against roger's db
 			string_t firstname = L"firstname";
@@ -153,17 +155,14 @@ void ServerComms::handle_put(http_request request)
 				string_t got_pass = req_json.at(password).as_string();
 
 				cout << conv(got_first) << " " << conv(got_last) << " " << conv(got_user) << " " << conv(got_email) << " " << conv(got_pass) << endl;
+				//TODO get session id from roger
 			}
 			else {
 				error = true;
 				error_details = U("some required fields missing");
+				code = status_codes::BadRequest;
 			}
-		}
-		else {
-			//no sesson header
-			error = true;
-			error_details = U("no session-id header found");
-		}
+		
 
 	}
 
@@ -171,11 +170,13 @@ void ServerComms::handle_put(http_request request)
 		//handle error state
 		json::value obj;
 		obj[L"error"] = json::value::string(error_details);
-		request.reply(status_codes::Unauthorized, obj);
+		request.reply(code, obj);
 	}
 	else {
 		//success
-		request.reply(status_codes::Created);
+		json::value obj;
+		obj[L"session-id"] = json::value::string(return_session_id);
+		request.reply(status_codes::Created, obj);
 	}
 	
 	//request.reply(status_codes::OK, "value returned PUT");
