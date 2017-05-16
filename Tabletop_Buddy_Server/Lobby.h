@@ -37,4 +37,17 @@ class Lobby {
 		void init_sort() {
 			sort(turn_order.begin(), turn_order.end(), [](Character a, Character b) { return (a.getInitiative()>b.getInitiative()); });
 		}
+
+		string getLID() {
+			return lobby_id;
+		}
+
+		string getLNAME() {
+			return lobby_name;
+		}
+
+		int getGMID() {
+			return GM_ID;
+		}
+
 };

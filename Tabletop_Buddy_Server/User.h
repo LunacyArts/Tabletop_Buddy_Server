@@ -2,21 +2,23 @@
 #define User_H
 
 #include <string>
+#include <time.h>
 using namespace std;
 
 class User {
 	private:
-		string User_ID;
-		string FName;
-		string LName;
 		string UName;
-		string Email;
-		string Creation_Date;
+		string AuthKey;
+		time_t LastContact;
+
 	public:
-		User(string fn, string ln, string un, string e) {
-			FName = fn;
-			LName = ln;
+		User(string fn, string ln, string un, string e, string pass) {
+			string FName = fn;
+			string LName = ln;
 			UName = un;
-			Email = e;
+			string Email = e;
+			string Password = pass;
 		}
+
+
 };
